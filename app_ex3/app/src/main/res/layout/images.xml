@@ -7,8 +7,8 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="368dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,15 +17,15 @@
 
         <ImageView
             android:id="@+id/personImage"
-            android:layout_width="268dp"
-            android:layout_height="251dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="108dp"
             android:adjustViewBounds="true"
             android:contentDescription="Image"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/rick1"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="42dp"
