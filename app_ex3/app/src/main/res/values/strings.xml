@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">app_ex3</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_rick_or_morty_activity">Rick_or_morty_activity</string>
+</resources>
