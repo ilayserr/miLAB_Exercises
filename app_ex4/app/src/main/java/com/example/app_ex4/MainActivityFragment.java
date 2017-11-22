@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 public class MainActivityFragment extends Fragment {
 
+    int number = 5;
+
     public MainActivityFragment() {
     }
 
@@ -32,7 +34,6 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 CharSequence num_minutes = num_minutes_textview.getText();
-                int number = 5;
                 try {
                     number = Integer.parseInt(num_minutes.toString());
                 } catch (Exception e) {
@@ -40,11 +41,10 @@ public class MainActivityFragment extends Fragment {
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                 }
-
                 Intent i = MyintService.newIntent(getActivity());
                 PendingIntent pi = PendingIntent.getService(getActivity(), 0, i, 0);
                 AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), number * 1000, pi);
+                alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0,  number*1000, pi);
 
             }
         });

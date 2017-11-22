@@ -48,6 +48,8 @@ public class MyintService extends IntentService {
                 .setContentTitle("my notifacation")
                 .setContentText(quotes[random_num])
                 .setAutoCancel(true)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(quotes[random_num]))
                 .build();
         NotificationManagerCompat notificationManager =
                 NotificationManagerCompat.from(this);
