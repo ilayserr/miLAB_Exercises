@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.provider.AlarmClock;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 public class MainActivityFragment extends Fragment {
 
     int number = 5;
+    AlarmManager alarmManager;
+    PendingIntent pi;
 
     public MainActivityFragment() {
     }
@@ -42,13 +45,30 @@ public class MainActivityFragment extends Fragment {
                     toast.show();
                 }
                 Intent i = MyintService.newIntent(getActivity());
-                PendingIntent pi = PendingIntent.getService(getActivity(), 0, i, 0);
-                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0,  number*1000, pi);
+                pi = PendingIntent.getService(getActivity(), 0, i, 0);
+                alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, number * 10, pi);
+            }
+        });
+
+        Button buttonStop = (Button) main_screen.findViewById(R.id.button_stop);
+        buttonStop.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                Intent stopIntent = MyintService.newIntent(getActivity());
+                stopIntent.setAction("stop");
+                getActivity().startService(stopIntent);
+                if (pi != null)
+                    pi.cancel();
+                if (alarmManager != null)
+                    alarmManager.cancel(pi);
 
             }
         });
+
         return main_screen;
 
     }
+
+
 }

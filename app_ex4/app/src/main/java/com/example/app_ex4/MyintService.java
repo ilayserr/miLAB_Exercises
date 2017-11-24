@@ -1,7 +1,9 @@
 package com.example.app_ex4;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
@@ -13,11 +15,28 @@ public class MyintService extends IntentService {
     public static Intent newIntent(Context context) {
         return new Intent(context, MyintService.class);
     }
+
+    protected boolean mShouldStop = false;
+
     public MyintService() {
         super(TAG);
     }
     @Override
     protected void onHandleIntent(Intent intent) {
+
+        if (intent.getAction() != null && intent.getAction().equals("stop")) {
+            System.out.println("stopping");
+            mShouldStop = true;
+            //return;
+        }
+
+        if (mShouldStop) {
+            System.out.println("stopping for real");
+            AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            am.cancel(PendingIntent.getService(this, 0, intent, 0));
+            return;
+        }
+
         String [] quotes = {
                 "Life is about making an impact, not making an income. --Kevin Kruse"
                 , "Whatever the mind of man can conceive and believe, it can achieve. –Napoleon Hill"

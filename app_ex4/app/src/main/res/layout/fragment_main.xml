@@ -39,6 +39,15 @@
             android:ems="10"
             android:inputType="textPersonName" />
 
+        <Button
+            android:id="@+id/button_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/button_num_minutes"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="87dp"
+            android:text="Stop" />
+
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
