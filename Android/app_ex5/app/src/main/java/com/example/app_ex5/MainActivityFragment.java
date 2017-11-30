@@ -46,7 +46,7 @@ public class MainActivityFragment extends Fragment {
                 // Engine ID
                 String cx = "004891332082346772916:rl1yg0ivyec";
 
-                String url = "https://www.googleapis.com/customsearch/v1?q=" + strNoSpaces + "&key=" + key + "&cx=" + cx + "&alt=json&fields=items/title"; ;
+                String url = "https://www.googleapis.com/customsearch/v1?q=" + strNoSpaces + "&key=" + key + "&cx=" + cx + "&alt=json&fields=items/title";
                 StringRequest req = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
