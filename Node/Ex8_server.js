@@ -12,7 +12,6 @@ let port = process.env.PORT || 5000;
 
 // Get time
 app.get('/getTime', function(req, res){
-  
   let dateTime = require('node-datetime');
   let dt = dateTime.create();
   let formatted = dt.format('Y-m-d H:M:S');
@@ -22,7 +21,6 @@ app.get('/getTime', function(req, res){
 // Read file
 app.get('/getFile', function(req, res) {
   let fileName = req.query.filename;
-  console.log(fileName);
   fs = require('fs')
   fs.readFile(fileName , 'utf8', function (err,data) {
     if (err) {
