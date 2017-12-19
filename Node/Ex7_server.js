@@ -1,5 +1,5 @@
 /*
-File Name :  Ex8_server.js
+File Name :  Ex7_server.js
 Author : Ilay Serr
 Email : ilay92@gmail.com
 */
@@ -30,7 +30,6 @@ app.get('/getFile', function(req, res) {
     res.send(data);
   });
 });
-
 
 // Let us listen to the port we want
 app.listen(port, function() {

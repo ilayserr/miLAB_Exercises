@@ -1,13 +1,13 @@
 {
-  "name": "ex8",
+  "name": "ex7",
   "version": "1.0.0",
   "description": "",
-  "main": "Ex8_server.js",
+  "main": "Ex7_server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node Ex8_server.js"
+    "start": "node Ex7_server.js"
   },
-  "author": "",
+  "author": "Ilay Serr",
   "license": "ISC",
   "dependencies": {
     "express": "~4.9.8",
