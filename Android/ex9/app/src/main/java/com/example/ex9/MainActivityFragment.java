@@ -1,5 +1,6 @@
 package com.example.ex9;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -29,8 +30,12 @@ public class MainActivityFragment extends Fragment {
         Button button_search = (Button) main_screen.findViewById(R.id.button_refresh);
         button_search.setOnClickListener(new View.OnClickListener() {
 
+
             @Override
             public void onClick(View view) {
+                final ProgressDialog loading = new ProgressDialog(view.getContext());
+                loading.setMessage("getting the time, please wait...");
+                loading.show();
                 final RequestQueue queue = Volley.newRequestQueue(getContext());
                 String url = "https://ex-milab.herokuapp.com/getTime";
 
@@ -42,6 +47,7 @@ public class MainActivityFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         Log.d("MainActivityFragment", "Response - " + response);
+                        loading.hide();
                         time_slot.setText(response);
                     }
                 }, new Response.ErrorListener() {
