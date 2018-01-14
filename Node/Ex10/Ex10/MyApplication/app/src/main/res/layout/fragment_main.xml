@@ -14,7 +14,7 @@
         tools:layout_editor_absoluteY="8dp">
 
         <EditText
-            android:id="@+id/editTextStockName"
+            android:id="@+id/editTextCoinName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="51dp"
@@ -28,12 +28,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Get Notifications"
-            android:layout_below="@+id/editTextStockName"
+            android:layout_below="@+id/editTextCoinName"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="37dp" />
 
         <TextView
-            android:id="@+id/textViewStockQuotes"
+            android:id="@+id/textViewCoinsQuotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonGetNotifications"

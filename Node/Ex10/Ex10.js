@@ -11,16 +11,16 @@ const alphavantage = require('alphavantage')({ key: 'ZTC8GK4V3U9A4GZO' });
 
 // Process.env.PORT let the port be set by Heroku
 let port = process.env.PORT || 5000;
-//let coin = 'xrp';
+
 let res , last_refreshed;
 
 io.on('connect', function (socket) {
-	socket.on('new quotes', function (data) {
+	socket.on('quotes', function (data) {
 	coin = data;
 	console.log("checking for coin " + coin)
 	});
 
-  	let postRate = setInterval( function() {
+  	let postRate = setInterval( ()  => {
 	  	if (!socket) {
 	  		console.log(`Couldn't connect socket`);
 	      	return;

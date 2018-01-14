@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 
@@ -21,33 +20,25 @@ public class MainActivityFragment extends Fragment {
     //public static final String SERVER_URL = "https://ex10-milab.herokuapp.com/";
     Button getNotificationsButton;
     EditText nameOfStockEtidText;
-    TextView stockQuotesTextView;
+    TextView coinQuotesTextView;
     private  Socket mSocket;
+    private String coinName;
 
     public MainActivityFragment() {
     }
-
-//    private Socket mSocket;
-//    {
-//        try {
-//            mSocket = IO.socket(SERVER_URL);
-//        } catch (URISyntaxException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setHasOptionsMenu(true);
         Log.d("MainActivityFragment", "socket");
-        StockApplication app = (StockApplication)getActivity().getApplication();
+        CoinApplication app = (CoinApplication)getActivity().getApplication();
         mSocket = app.getSocket();
         mSocket.on(Socket.EVENT_CONNECT,onConnect);
         mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.on("new quotes", onNewQuotes);
+        mSocket.on("postRate", onNewQuotes);
         mSocket.connect();
 
     }
@@ -66,19 +57,16 @@ public class MainActivityFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final Button getNotificationsButton = (Button)view.findViewById(R.id.buttonGetNotifications);
-        final EditText nameOfStockEtidText = (EditText)view.findViewById(R.id.editTextStockName);
-        final TextView stockQuotesTextView = (TextView)view.findViewById(R.id.textViewStockQuotes);
+        final EditText nameOfCoinEditText = (EditText)view.findViewById(R.id.editTextCoinName);
+        final TextView coinQuotesTextView = (TextView)view.findViewById(R.id.textViewCoinsQuotes);
 
         getNotificationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String stockName = nameOfStockEtidText.getText().toString().trim();
-//                if (TextUtils.isEmpty(stockName)) {
-//                    return;
-//                }
-                Log.d("MainActivityFragment", "click text - " + stockName);
-                nameOfStockEtidText.setText("");
-                mSocket.emit("new quotes", stockName);
+                coinName = nameOfCoinEditText.getText().toString();
+                Log.d("MainActivityFragment", "the coin name is - " + coinName);
+                nameOfCoinEditText.setText("");
+               //mSocket.emit("new quotes", coinName);
             }
         });
 
@@ -91,6 +79,7 @@ public class MainActivityFragment extends Fragment {
                 @Override
                 public void run() {////
                     Log.d("MainActivityFragment", "run: Connection Established");
+                    mSocket.emit("postRate", coinName);
                 }
             });
         }
@@ -126,18 +115,11 @@ public class MainActivityFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    JSONObject data = (JSONObject) args[0];
-//                    String username;
-                    String message = args[0].toString();;
-                    Log.d("MainActivityFragment", "Response - " + message);
-//                    try {
-//                        username = data.getString("username");
-//                        message = data.getString("message");
-//                    } catch (JSONException e) {
-//                        return;
-//                    }
 
-                    stockQuotesTextView.setText(message);
+                    String message = args[0].toString();
+                    Log.d("MainActivityFragment", "Response - " + message);
+
+                    coinQuotesTextView.setText(message);
                 }
             });
         }
@@ -145,9 +127,8 @@ public class MainActivityFragment extends Fragment {
 
     public void onDestroy() {
         super.onDestroy();
-
         mSocket.disconnect();
-        mSocket.off("new quotes", onNewQuotes);
+        mSocket.off("postRate", onNewQuotes);
     }
 
 }

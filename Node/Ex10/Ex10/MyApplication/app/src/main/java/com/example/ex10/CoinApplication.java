@@ -11,12 +11,13 @@ import java.net.URISyntaxException;
  * Created by RoniBM on 07/01/2018.
  */
 
-public class StockApplication extends Application {
+public class CoinApplication extends Application {
 
+    String server = "http://localhost:5000";
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket(Constant.SERVER_URL);
+            mSocket = IO.socket(server);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
