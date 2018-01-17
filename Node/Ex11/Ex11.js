@@ -35,12 +35,12 @@ function EnterSong(name, artist, genre, res) {
 }
 
 app.put('/', function(req, res) {
-    updateSong(req.body.id, req.body.song, req.body.artist, req.body.genre, res);
+    updateSong(req.body.id, req.body.name, req.body.artist, req.body.genre, res);
 });
 
-function updateSong(id, song, artist, genre, res) {
+function updateSong(id, name, artist, genre, res) {
   let song = {
-    name: song,
+    name: name,
     artist: artist,
     genre: genre
   };
@@ -69,7 +69,7 @@ function readSong(song, res) {
   db.collection('songsCol').findOne({name: song}, function(err, document) {
     if(err || !document) res.send("Cannot find a song named " + song);
     else {
-      printSong(document, res);
+      printOneSong(document, res);
       res.end();
     }
   });
@@ -81,7 +81,7 @@ function readArtist(artist, res) {
     if(err || !results[0]) res.send("Error finding songs");
     else {
      res.write(`Songs found:\n`);
-     results.forEach(doc => printSong(doc, res));
+     results.forEach(doc => printOneSong(doc, res));
      res.end();
     }
   });
@@ -92,7 +92,7 @@ function readGenre(genere, res) {
     if(err || !results[0]) res.send("Error finding songs");
     else {
      res.write(`Songs found:\n`);
-     results.forEach(doc => printSong(doc, res));
+     results.forEach(doc => printOneSong(doc, res));
      res.end();
     }
   });
@@ -107,13 +107,13 @@ function printOneSong(song, res) {
 }
 
 app.delete('/:id' , function(req, res) {
-    let entryId = req.params.id;
-    deleteSong(entryId, res);
+    let SongId = req.params.id;
+    deleteSong(SongId, res);
 });
 
-function deleteSong(Id, res) {
-  db.collection('songsCol').deleteOne({ _id: ObjectId(Id) }, function(err, res) {
-      res.send("Deleted song " + songId);
+function deleteSong(SongId, res) {
+  db.collection('songsCol').deleteOne({ _id: ObjectId(SongId) }, function(err, res) {
+      res.send("Deleted song " + SongId);
   });
 }
 
