@@ -15,17 +15,15 @@ const ObjectId = require('mongodb').ObjectId;
 let port = process.env.PORT || 5000;
 let db;
 
-
+// Enter a new song with the parameters given in a shape of JSON, calls the EnterSong function below
 app.post('/', function(req, res) {
-    if(!req.body.name || !req.body.artist || !req.body.genre) {
-      res.status(400).send({message: "Doesn't have parameters" + req.body + "  " + req.body[0] });
-    } else {
+    if(!req.body.name || !req.body.artist || !req.body.genre) 
+      res.status(400).send({message: "Doesn't have parameters, please enter them in the shape of JSON"});
+    else 
       let status = EnterSong(req.body.name, req.body.artist, req.body.genre, res);
-    }
 });
 
-
-
+// Enter a new song with the parameters given
 function EnterSong(name, artist, genre, res) {
   let song = {name: name, artist: artist, genre: genre};
   db.collection('songsCol').insert([song], function(err, database) {
@@ -34,10 +32,12 @@ function EnterSong(name, artist, genre, res) {
     });
 }
 
+// Activates the update function below
 app.put('/', function(req, res) {
     updateSong(req.body.id, req.body.name, req.body.artist, req.body.genre, res);
 });
 
+// Updates the song by a given ID
 function updateSong(id, name, artist, genre, res) {
   let song = {
     name: name,
@@ -45,6 +45,7 @@ function updateSong(id, name, artist, genre, res) {
     genre: genre
   };
 
+// Updates the database
 db.collection('songsCol').updateOne({_id: ObjectId(id)}, {$set: song}, function (err, numUpdated) {
     if(err) res.send("Error update song " + id);
     else if(numUpdated) res.send("Succedded to update");
@@ -52,7 +53,7 @@ db.collection('songsCol').updateOne({_id: ObjectId(id)}, {$set: song}, function 
   });
 }
 
-
+// Activate the read functions below
 app.get('/', function(req, res) {
   if(req.query.name) {
     readSong(req.query.name, res);
@@ -61,10 +62,11 @@ app.get('/', function(req, res) {
   } else if(req.query.artist) {
     readGenre(req.query.genre, res);
   } else {
-    res.status(400).send({message: "Doesn't have parameters"});
+    res.status(400).send({message: "Doesn't have songs answering this data"});
   }
 });
 
+// Read the data for the song name given, uses the printOneSong method
 function readSong(song, res) {
   db.collection('songsCol').findOne({name: song}, function(err, document) {
     if(err || !document) res.send("Cannot find a song named " + song);
@@ -75,7 +77,7 @@ function readSong(song, res) {
   });
 }
 
-
+// Read all the songs related to a specific artist, uses the printOneSong method
 function readArtist(artist, res) {
   db.collection('songsCol').find({artist: artist}).toArray((err, results) => {
     if(err || !results[0]) res.send("Error finding songs");
@@ -87,6 +89,7 @@ function readArtist(artist, res) {
   });
 }
 
+// Read all the songs related to a specific genre, uses the printOneSong method
 function readGenre(genere, res) {
   db.collection('songsCol').find({genre: genere}).toArray((err, results) => {
     if(err || !results[0]) res.send("Error finding songs");
@@ -98,36 +101,37 @@ function readGenre(genere, res) {
   });
 }
 
+// Print the song details
 function printOneSong(song, res) {
-  res.write(`Song id: ${song._id}\n`);
   res.write(`Song name: ${song.name}\n`);
   res.write(`Song artist: ${song.artist}\n`);
   res.write(`Song genre: ${song.genre}\n`);
-  res.write(`\n`);
+  res.write(`Song id: ${song._id}\n\n`);
 }
 
+// Activate the deleteSong function
 app.delete('/:id' , function(req, res) {
     let SongId = req.params.id;
     deleteSong(SongId, res);
 });
 
+// Delete song from the database
 function deleteSong(SongId, res) {
   db.collection('songsCol').deleteOne({ _id: ObjectId(SongId) }, function(err, res) {
       res.send("Deleted song " + SongId);
   });
 }
 
-
+// Connects to mongodb using mlab.com data base
 MongoClient.connect(mongoUrl, (err, database) => {
   if (err) 
     return console.log(err)
+  
   console.log("Connected to the server");
   if (err) return console.log(err)
   db = database.db("songs")
-  db.collection('songsCol').createIndex({ name: 1 });
-  db.collection('songsCol').createIndex({ artist: 1 });
-  db.collection('songsCol').createIndex({ genre: 1 });
 
+  // Listens to the app on port 5000
   app.listen(port, function() {
       console.log('My app is running on http://localhost:' + port);
   });
